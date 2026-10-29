@@ -1,10 +1,5 @@
 package Ejercicio3;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.stream.IntStream;
-
 public class Visualizador {
     private static final String FILTRO = "[a-z]||[A-Z]";
 

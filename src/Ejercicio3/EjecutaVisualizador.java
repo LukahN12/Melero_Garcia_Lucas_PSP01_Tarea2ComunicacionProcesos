@@ -14,8 +14,9 @@ public class EjecutaVisualizador {
             pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 
           String texto;
-
+          System.out.print("Introduce la cantidad de veces a repetir: ");
           int cantidad = Entrada.entero();
+          System.out.print("Introduce la palabra a repetir: ");
           texto = Entrada.cadena();
           pb.command().add(String.valueOf(cantidad));
           pb.command().add(texto);
