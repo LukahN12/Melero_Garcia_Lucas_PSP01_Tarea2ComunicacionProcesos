@@ -1,5 +1,7 @@
 package Ejercicio3;
 
+import org.iesalandalus.programacion.utilidades.Entrada;
+
 import java.io.*;
 
 public class EjecutaVisualizador {
@@ -7,34 +9,31 @@ public class EjecutaVisualizador {
         try {
             ProcessBuilder pb = new ProcessBuilder("java", "Ejercicio3.Visualizador");
             pb.directory(new File(System.getProperty("user.dir") + File.separator + "out" + File.separator + "production" + File.separator + "pruebasPSP"));
-            Process proceso = pb.start();
+            Process proceso;
 
-            // Para ENVIARLE datos al hijo
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(proceso.getOutputStream()));
-            // Para LEER lo que el hijo escribe
-            BufferedReader lector = new BufferedReader(new InputStreamReader(proceso.getInputStream()));
-            // Para leer lo que escribe el usuario en el teclado
-            BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
+            pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 
-            String linea;
-            while (!(linea = teclado.readLine()).equals("fin"))
-            {
-                bw.write(linea);
-                bw.newLine();
-                bw.flush();
+          String texto;
 
-                System.out.println(lector.readLine());
+          int cantidad = Entrada.entero();
+          texto = Entrada.cadena();
+          pb.command().add(String.valueOf(cantidad));
+          pb.command().add(texto);
+          proceso = pb.start();
+          proceso.waitFor();
+          int salida = proceso.exitValue();
+            System.out.println("valor de salida: " + salida);
+            if (salida == 1){
+                System.out.println("Final erroneo");
+            } else {
+                System.out.println("Final correcto");
             }
-
-            bw.close();
-            lector.close();
-            teclado.close();
-            proceso.destroy();
-            System.out.println("Padre terminado");
         }
         catch (IOException e)
         {
             System.out.println("No se pudo iniciar el proceso: " + e.getMessage());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }
